@@ -100,7 +100,8 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
                 </label>
                 <textarea rows="6" id="description" placeholder="Enter Description of the Ticket..." class="ticketInput formbold-form-input"></textarea>
             </div>
-            <div class="mt-4">
+        <div class="flex justify-between border my-4 p-4">
+            <div class="">
                 <p class="ticketInput text-purple-400">Status</p>
                 <select id="status" class="ticketInput" id="">
                     <option value="To Do">To Do</option>
@@ -108,7 +109,6 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
                     <option value="Done">Done</option>
                 </select>
             </div>
-
             <div class="">
                 <p class="ticketInput text-purple-400">Priorety</p>
                 <select name="priorety" class="ticketInput" id="priorety">
@@ -117,12 +117,25 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
                     <option value="Very Importent">Very Importent</option>
                 </select>
             </div>
+        </div>
 
+        
+            <div class="m-4">
+                <div class="flex justify-between">
+                    <p class="ticketInput text-purple-400">Tags</p>
+                    <select id="tags" name="tag" class="ticketInput">
+                        <!-- display tags in here ! -->
+                    </select>
+                    <input id="addTagInput" type="text" class="border px-4 shadow-xl outline-none" placeholder="Add Tag">
+                    <button id="addTagButton" class="border-2 p-2 hover:bg-gray-300">Add</button>
+                    <script src="../js/AddTagAjax.js"></script>
+                </div>
+            </div>
             <button value="<?= $_SESSION['userId'] ?>" id="btn" class="formbold-btn">Submit</button>
     </div>
 </div>
 
-<form id="menu" class="shadow-xl m-2 p-3 absolute bg-white rounded-xl right-6" style="top: -15px; z-index: -1;" action="../controllers/LogOut.php" method="post">
+<form id="menu" class="shadow-xl m-2 p-3 absolute bg-white rounded-xl right-6" style="top: -15px; z-index: -1;" action="../controllers/User/LogOut.php" method="post">
     <p>Profile</p>
     <button class="text-red-300">Log Out</button>
 </form>

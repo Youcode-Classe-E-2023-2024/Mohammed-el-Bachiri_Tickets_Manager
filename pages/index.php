@@ -20,8 +20,6 @@ elseif (isset($_SESSION['userId'])){
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 ">
-    <button id="fetchTickets">Fetch Tickets</button>
-
 
     <!-- component -->
 <nav class="bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
@@ -95,7 +93,7 @@ elseif (isset($_SESSION['userId'])){
 <!-- end login -->
 </nav>
 
-<form id="menu" class="shadow-xl m-2 p-3 absolute bg-white rounded-xl right-6" style="top: -15px; z-index: -1;" action="../controllers/LogOut.php" method="post">
+<form id="menu" class="shadow-xl m-2 p-3 absolute bg-white rounded-xl right-6" style="top: -15px; z-index: -1;" action="../controllers/User/LogOut.php" method="post">
     <p>Profile</p>
     <button class="text-red-300">Log Out</button>
 </form>
@@ -105,7 +103,7 @@ elseif (isset($_SESSION['userId'])){
 </div>
 
 <div id="displayTickets" class="text-gray-100 mt-4">
-
+<!-- display tickets here -->
 </div>
     <script src="../js/DisplayTicketsAjax.js"></script>
 

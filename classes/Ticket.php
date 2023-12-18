@@ -1,10 +1,6 @@
 <?php
 
 class Ticket {
-    private $title;
-    private $description;
-    private $status;
-    private $priorety;
     private $connection;
     function __construct($connection){
         $this->connection = $connection;
