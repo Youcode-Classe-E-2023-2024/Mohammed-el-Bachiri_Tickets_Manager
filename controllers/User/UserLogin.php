@@ -1,11 +1,11 @@
     <?php
-    include '../config/DbConnection.php';
-    include '../classes/User.php';
+    include '../../config/DbConnection.php';
+    include '../../classes/User.php';
     session_start();
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $user = new User($email, $password,$connection, '','');
+    $user = new User($connection, $email, $password, '','');
     try {
         $loginResult = $user->logIn();
     } catch (Exception $e) {
@@ -23,7 +23,7 @@
     } else {
         if (isset($loginResult)) {
             $_SESSION['login'] = true; // pass correct + login status now is LOGED IN
-            $_SESSION['userId'] = $loginResult;
-            header('location: ../pages/index.php');
+            $_SESSION['userId'] = $loginResult; // login method returns user id
+            header('location: ../../pages/index.php');
         }
     }

@@ -1,19 +1,35 @@
-const data = document.querySelectorAll('#title, #description, #priorety, #status');
-const btn = document.querySelector('#btn');
+const data = document.querySelectorAll('#title, #description, #priority, #status, #tags');
+const submitTicketBtn = document.querySelector('#submitTicket');
 const succAdd = document.querySelector('#succAdd');
 const failAdd = document.querySelector('#failAdd');
+const usersToAssign = document.querySelector('#usersToAssign');
 
 clear();
 let x = 0;
-btn.addEventListener('click', () => {
+submitTicketBtn.addEventListener('click', () => {
+    const selectedUsers = []; // will -> store the IDs of the selected users
+    const options = usersToAssign.selectedOptions;
+    for (let i = 0; i < options.length; i++) {
+        selectedUsers.push(options[i].value);
+    }
 
-    if(data[0].value !== '' && data[1].value !== '' && data[2].value !== '' && data[3].value !== ''){
-        fetch("../controllers/TicketAdd.php",{
+    if(data[0].value !== '' && data[1].value !== '' && data[2].value !== '' && data[3].value !== ''&& data[4].value !== ''){
+        fetch("../controllers/Ticket/TicketAdd.php", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({userId: btn.value, t: data[0].value, d: data[1].value, s: data[2].value, p: data[3].value}),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                userId: submitTicketBtn.value,
+                title: data[0].value,
+                desc: data[1].value,
+                status: data[2].value,
+                priority: data[3].value,
+                tag: data[4].value,
+                users: selectedUsers
+            })
         })
-        .catch(error => console.log(error))
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.log(error));
         clear();
         popUpSucc();
     } else {

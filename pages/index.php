@@ -1,14 +1,14 @@
 <?php
 session_start();
 include '../config/DbConnection.php';
-include '../classes/SelectData.php';
+include '../classes/User.php';
 
 if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
     header('location: ../login.php');
 }
 elseif (isset($_SESSION['userId'])){
-    $selectUser = new SelectData($connection);
-    $currentUserData = $selectUser->select('users','userId',$_SESSION['userId']);
+    $user = new User($connection);
+    $currentUserData = $user->Select($_SESSION['userId']);
 }
 ?>
 <!DOCTYPE html>
@@ -18,11 +18,17 @@ elseif (isset($_SESSION['userId'])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Webkit (Chrome, Safari) */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+    </style>
 </head>
-<body class="bg-gray-100 ">
+<body class="">
 
     <!-- component -->
-<nav class="bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
+<nav class="bg-white shadow-xl w-full flex relative justify-between items-center mx-auto px-8 h-20">
     <!-- logo -->
     <div class="inline-flex">
         <a class="_o6689fn"
@@ -82,6 +88,7 @@ elseif (isset($_SESSION['userId'])){
                             </g>
                         </svg>
                     </div>
+                    <p class="mx-4"><?= $currentUserData['username'] ?></p>
                     <div class="flex pl-2 h-10" id="btnMenu">
                         <img src="../img/<?=$currentUserData['imagePath']?>" alt="" class="rounded-full shadow-xl">
                     </div>
@@ -105,8 +112,7 @@ elseif (isset($_SESSION['userId'])){
 <div id="displayTickets" class="text-gray-100 mt-4">
 <!-- display tickets here -->
 </div>
-    <script src="../js/DisplayTicketsAjax.js"></script>
-
+<script src="../js/DisplayTicketsAjax.js"></script>
 <script src="../js/menu.js"></script>
 </body>
 </html>

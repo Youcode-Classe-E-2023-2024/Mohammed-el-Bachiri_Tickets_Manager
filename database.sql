@@ -9,28 +9,35 @@ CREATE TABLE users (
     password VARCHAR(500),
     imagePath TEXT
 );
+CREATE TABLE tags (
+    tagId INT AUTO_INCREMENT PRIMARY KEY,
+    tag VARCHAR(100)
+);
 CREATE TABLE tickets (
     ticketId INT AUTO_INCREMENT PRIMARY KEY,
     userId INT,
     title VARCHAR(200),
     description VARCHAR(200),
     status VARCHAR(500),
-    tagId VARCHAR(500),
-    priorety VARCHAR(500),
-    FOREIGN KEY (userId) REFERENCES users(userId)
+    tagId INT,
+    priority VARCHAR(500),
+    FOREIGN KEY (userId) REFERENCES users(userId),
+    FOREIGN KEY (tagId) REFERENCES tags(tagId)
 );
-CREATE TABLE tags (
-    tagId INT AUTO_INCREMENT PRIMARY KEY,
-    tag VARCHAR(100)
-);
+
 CREATE TABLE assignments (
     assignmentId INT AUTO_INCREMENT PRIMARY KEY,
     ticketId INT,
-    userId INT
+    userId INT,
+    FOREIGN KEY (ticketId) REFERENCES tickets(ticketId),
+    FOREIGN KEY (userId) REFERENCES users(userId)
 );
+
 CREATE TABLE comments (
     commentId INT AUTO_INCREMENT PRIMARY KEY,
     comment TEXT,
     ticketId INT,
-    userId INT
+    userId INT,
+    FOREIGN KEY (ticketId) REFERENCES tickets(ticketId),
+    FOREIGN KEY (userId) REFERENCES users(userId)
 );

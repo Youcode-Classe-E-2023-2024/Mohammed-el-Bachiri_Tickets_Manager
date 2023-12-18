@@ -1,5 +1,5 @@
 const input = document.querySelector('#addTagInput');
-const btn = document.querySelector('#addTagButton');
+const addTagButton = document.querySelector('#addTagButton');
 const tags = document.querySelector('#tags');
 
 
@@ -20,7 +20,7 @@ function displayTags(){
 
 displayTags();
 
-btn.addEventListener('click', ()=>{
+addTagButton.addEventListener('click', ()=>{
     if (input.value !== '') {
         fetch('../controllers/Tag/TagAdd.php', {
             method: "POST",
@@ -30,8 +30,10 @@ btn.addEventListener('click', ()=>{
             .then(response => response.text())
             .then(data => {
                 if (data) {
-                    displayTags();
+                    displayTags(); // display the new tag list after adding a tag
                     input.value = '';
+                } else {
+                    console.log(data)
                 }
             })
             .catch(error => console.log(error));

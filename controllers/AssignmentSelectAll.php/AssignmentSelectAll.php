@@ -1,9 +1,9 @@
 <?php 
-include '../../classes/Ticket.php';
+include '../../classes/Assignment.php';
 include '../../config/DbConnection.php';
 
-$tickets = new Ticket($connection);
-$result = $tickets->SelectAll();
+$assignment = new Assignment($connection);
+$result = $assignment->SelectAll();
 
 $rows = array();
 while($row = $result->fetch_assoc()){

@@ -7,7 +7,7 @@ class User
     private $imagePath;
     private $connection;
 
-    function __construct($email, $password, $connection, $username = null, $imagePath = null)
+    function __construct($connection, $email = null, $password = null, $username = null, $imagePath = null)
     {
         $this->username = $username;
         $this->email = $email;
@@ -16,7 +16,7 @@ class User
         $this->connection = $connection;
     }
 
-    public function checkIfUserExist () 
+    public function checkIfUserExist ()
     {
         $query = "SELECT * FROM users WHERE email = ?";
         $stm = $this->connection->prepare($query);
@@ -69,4 +69,29 @@ class User
         }
     }
 
+    function Select($userId)
+    {
+        $query = "SELECT * FROM users WHERE userId = ?";
+        $stm = $this->connection->prepare($query);
+        $stm->bind_param('i', $userId);
+        $execution = $stm->execute();
+        if (!$execution) {
+            throw new Exception($stm->error);
+        } else {
+            $result = $stm->get_result();
+            return $result->fetch_assoc();
+        }
+    }
+
+    function SelectAll()
+    {
+        $query = "SELECT * FROM users";
+        $execution = mysqli_query($this->connection, $query);
+        if (!$execution) {
+            throw new Exception('failing adding tag ' . mysqli_error($this->connection));
+        } else {
+            $data = mysqli_fetch_all($execution, MYSQLI_ASSOC);
+            return $data;
+        }
+    }
 }

@@ -12,6 +12,12 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
     <title>Ticket Manager</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/style.css">
+    <style>
+        /* Webkit (Chrome, Safari) */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <!-- component -->
@@ -48,7 +54,7 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
     <!-- login -->
     <div class="flex-initial">
       <div class="flex justify-end items-center relative">
-       
+
         <div class="flex mr-4 items-center">
             <div class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center  bg-gray-200 rounded-full cursor-pointer">My Tickets</div>
             <div class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">Assignments</div>
@@ -89,29 +95,29 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 
 <div class="formbold-main-wrapper">
     <div class="formbold-form-wrapper" id="">
-            <div class="formbold-input-group">
-                <label for="name" class="formbold-form-label"> Title </label>
-                <input type="text" id="title" placeholder="Enter title of the Ticket" class="ticketInput formbold-form-input"/>
-            </div>
+        <div class="formbold-input-group">
+            <label for="name" class="formbold-form-label"> Title </label>
+            <input type="text" id="title" placeholder="Enter title of the Ticket" class="ticketInput formbold-form-input"/>
+        </div>
 
-            <div>
-                <label for="message" class="formbold-form-label">
-                    Description
-                </label>
-                <textarea rows="6" id="description" placeholder="Enter Description of the Ticket..." class="ticketInput formbold-form-input"></textarea>
-            </div>
-        <div class="flex justify-between border my-4 p-4">
-            <div class="">
-                <p class="ticketInput text-purple-400">Status</p>
+        <div>
+            <label for="message" class="formbold-form-label">
+                Description
+            </label>
+            <textarea rows="6" id="description" placeholder="Enter Description of the Ticket..." class="ticketInput formbold-form-input"></textarea>
+        </div>
+        <div class="flex justify-between border my-4 p-4 items-center">
+            <div class="flex">
+                <p class="ticketInput text-purple-400 mr-4">Status</p>
                 <select id="status" class="ticketInput" id="">
                     <option value="To Do">To Do</option>
                     <option value="Doing">Doing</option>
                     <option value="Done">Done</option>
                 </select>
             </div>
-            <div class="">
-                <p class="ticketInput text-purple-400">Priorety</p>
-                <select name="priorety" class="ticketInput" id="priorety">
+            <div class="flex">
+                <p class="ticketInput text-purple-400 mr-4">Priorety</p>
+                <select name="priorety" class="ticketInput" id="priority">
                     <option value="Importent">Importent</option>
                     <option value="Not Importent">Not Importent</option>
                     <option value="Very Importent">Very Importent</option>
@@ -119,19 +125,29 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
             </div>
         </div>
 
-        
-            <div class="m-4">
-                <div class="flex justify-between">
-                    <p class="ticketInput text-purple-400">Tags</p>
-                    <select id="tags" name="tag" class="ticketInput">
-                        <!-- display tags in here ! -->
-                    </select>
-                    <input id="addTagInput" type="text" class="border px-4 shadow-xl outline-none" placeholder="Add Tag">
-                    <button id="addTagButton" class="border-2 p-2 hover:bg-gray-300">Add</button>
-                    <script src="../js/AddTagAjax.js"></script>
+
+        <div class="border">
+            <div class="flex justify-between items-center">
+                <p class="pl-4 ticketInput text-purple-400 w-fit">Tags</p>
+                <select id="tags" name="tag">
+                    <!-- display tags in here ! -->
+                </select>
+                <div>
+                    <input id="addTagInput" type="text" class=" p-4 outline-none w-32 " placeholder="Add Tag">
+                    <button id="addTagButton" class="border-2 hover:bg-purple-300 p-4">Add</button>
                 </div>
             </div>
-            <button value="<?= $_SESSION['userId'] ?>" id="btn" class="formbold-btn">Submit</button>
+        </div>
+        
+        
+        <div class="border mt-4 p-2">
+            <p class="pl-4 ticketInput text-purple-400 w-fit my-2">Assign this Ticket to </p>
+            <select name="" id="usersToAssign" class="displayUsers mx-2 w-full outline-none shadow-xl p-4 rounded-xl"  multiple>
+                <!-- display users here  -->
+            </select>
+        </div>
+
+        <button value="<?= $_SESSION['userId'] ?>" id="submitTicket" class="formbold-btn">Submit</button>
     </div>
 </div>
 
@@ -146,7 +162,9 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 <div id="failAdd" style="transition: .6s;" class="bg-gradient-to-l from-red-500 opacity-0 absolute top-20 bg-red-900 text-white w-fit m-2 p-4 rounded-sm">
     You Must Fill All The Inputs !
 </div>
-<script src="../js/AddTicketAjax.js"></script>
+    <script src="../js/AddTagAjax.js"></script>
+    <script src="../js/AddTicketAjax.js"></script>
+    <script src="../js/DisplayUsers.js"></script>
 </body>
 </html>
 

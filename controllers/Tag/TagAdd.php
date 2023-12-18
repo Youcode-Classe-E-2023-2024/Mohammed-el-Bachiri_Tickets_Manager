@@ -9,7 +9,6 @@ if (isset($data['tag'])) {
     if ($result) {
         echo true;
     } else {
-        echo 'Error adding tag.';
-        exit();
+        echo mysqli_error($connection);
     }
 }
