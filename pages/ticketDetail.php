@@ -121,22 +121,24 @@ $result = $assignment->SelectAssignedUses($ticketID);
     <!-- Ticket details section -->
     <div class="mb-8">
         <?php
-        $x = $_POST['userId'];
-        $y = $_SESSION['userId'];
-        $w = false;
+        $isTicketOwner = ($ct['userId'] == $_SESSION['userId']); // return true or false
+        $isAssignedUser = false;
         foreach ($result as $vl) {
-            if ($vl['userId'] == $x) {
-                $w = true;
+            if ($vl['userId'] == $_SESSION['userId']) {
+                $isAssignedUser = true;
+                break;
             }
         }
-        echo $w;
-        if ( $x == $y && $ct['status'] != 'Closed' || $w = true && $ct['status'] != 'Closed') { ?>
-            <p id="closeTicket" class="hover:opacity-70 cursor-pointer  text-red-400 font-bold text-xl bg-gray-100 p-4 rounded-xl w-36 flex justify-center shadow-xl absolute top-26 left-8"> CLOSE </p>
-            <input id="ticketiD" type="hidden" value="<?= $ticketID; ?>">
-        <?php }?>
-        <?php if ($x == $y) { ?>
-            <p id="editTicket" class="hover:opacity-70 cursor-pointer  text-green-400 font-bold text-xl bg-gray-100 p-4 rounded-xl w-36 flex justify-center shadow-xl absolute top-64 left-8"> Edit Your Ticket </p>
-        <?php }?>
+        $isTicketOpen = ($ct['status'] != 'Closed');
+        if ($isTicketOpen) { ?>
+            <?php if ($isTicketOwner || $isAssignedUser) { ?>
+                <p id="closeTicket" class="hover:opacity-70 cursor-pointer text-red-400 font-bold text-xl bg-gray-100 p-4 rounded-xl w-36 flex justify-center shadow-xl absolute top-26 left-8"> CLOSE </p>
+                <input id="ticketiD" type="hidden" value="<?= $ticketID; ?>">
+            <?php }; ?>
+            <?php if ($isTicketOwner) { ?>
+                <p id="editTicket" class="hover:opacity-70 cursor-pointer text-green-400 font-bold text-xl bg-gray-100 p-4 rounded-xl w-36 flex justify-center shadow-xl absolute top-64 left-8"> Edit Your Ticket </p>
+            <?php } } ?>
+
         <h1 class="text-3xl font-bold mb-4" id="ticketTitle"><?= $ct['title']; ?></h1>
         <div class="shadow-xl my-8 flex h-14 justify-start items-center bg-blue-100 w-64 justify-between rounded-xl px-6">
             <p class="text-gray-500 text-sm">Created by </p>
@@ -167,9 +169,7 @@ $result = $assignment->SelectAssignedUses($ticketID);
     <div class="mb-8">
         <h2 class="text-2xl font-semibold mb-4">Comments</h2>
 
-    <?php
-    if($ct['status'] !== 'Closed') {
-    ?>
+    <?php if ($isTicketOpen) : ?>
             <div class="mb-8">
                 <label for="comment" class="block text-sm font-medium text-gray-700">Add a comment:</label>
                 <div class="flex">
@@ -184,9 +184,9 @@ $result = $assignment->SelectAssignedUses($ticketID);
                 <!-- display comments here -->
             </div>
         </div>
-        <?php } else { ?>
+        <?php else : ?>
         <h1 class="text-red-400 text-4xl bg-red-100 p-4 rounded">This Ticket is Closed <span class="text-sm">so you can't see or add comments !</span></h1>
-        <?php }?>
+    <?php endif; ?>
     </div>
 </div>
 
