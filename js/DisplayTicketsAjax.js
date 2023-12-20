@@ -31,8 +31,8 @@ function displayTickets(url, urlAssignment, type = null) {
                     <form action="pages/ticketDetail.php" method="post">
                         <button rel="readMreBtn noopener noreferrer" class="hover:underline text-blue-400">Read more</button>
                         <input name="ticketId" type="hidden" value="${ticket.ticketId}">
+                        <input name="userId" type="hidden" value="${ticket.userId}">
                     </form>
-                    <div id="testallah"></div>
                         <div>
                             <a rel="noopener noreferrer" href="#" class="flex items-center">
                                 <p class="text-sm text-gray-600">Created By</p>
@@ -43,9 +43,6 @@ function displayTickets(url, urlAssignment, type = null) {
                     </div>
                 </div>
                 `;
-                if (type === 'assign'){
-                    document.querySelector('#testallah').innerHTML = `<p class="text-red-400">hello</p>`;
-                }
             });
             fetchUsers(urlAssignment); // display assigned users after displaying each ticket
         })
@@ -78,24 +75,36 @@ function fetchUsers(url) {
             .catch(error => console.log(error));
     });
 }
-all.addEventListener('click', () =>{
-    mine.style = "box-shadow: 0 0px 0px blue";
-    assignedTo.style = "box-shadow: 0 0px 0px blue";
-    all.style = "box-shadow: 0 5px 5px blue";
+const applyBoxShadow = (element) => {
+    all.style.boxShadow = mine.style.boxShadow = assignedTo.style.boxShadow = "0 0px 0px blue";
+    element.style.boxShadow = "0 5px 5px blue";
+};
+
+const displayAllTickets = () => {
     displayTickets("controllers/Ticket/TicketSelectAll.php", 'controllers/Assignment/AssignmentSelectAll.php');
+};
+
+all.addEventListener('click', () => {
+    applyBoxShadow(all);
+    displayAllTickets();
 });
 
 mine.addEventListener('click', () => {
-    all.style = "box-shadow: 0 0px 0px blue";
-    assignedTo.style = "box-shadow: 0 0px 0px blue";
-    mine.style = "box-shadow: 0 5px 5px blue";
+    applyBoxShadow(mine);
     displayTickets("controllers/Ticket/TicketSelectMine.php", 'controllers/Assignment/AssignmentSelectAll.php');
 });
 
 assignedTo.addEventListener('click', () => {
-    all.style = "box-shadow: 0 0px 0px blue";
-    mine.style = "box-shadow: 0 0px 0px blue";
-    assignedTo.style = "box-shadow: 0 5px 5px blue";
+    applyBoxShadow(assignedTo);
     displayTickets("controllers/Ticket/TicketSelectAssignedTo.php", 'controllers/Assignment/AssignmentSelectAll.php', 'assign');
 });
+
+applyBoxShadow(all);
+displayAllTickets();
+
+setInterval(() => {
+    applyBoxShadow(all);
+    displayAllTickets();
+}, 10000);
+
 

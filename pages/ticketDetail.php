@@ -14,9 +14,9 @@ elseif (isset($_SESSION['userId'])){
 }
 $currentTicket = new Ticket($connection);
 $ct = $currentTicket->Select($_POST['ticketId']);
-
+$ticketID = $_POST['ticketId'];
 $assignment = new Assignment($connection);
-$result = $assignment->SelectAssignedUses($_POST['ticketId']);
+$result = $assignment->SelectAssignedUses($ticketID);
 
 ?>
 <!DOCTYPE html>
@@ -113,13 +113,30 @@ $result = $assignment->SelectAssignedUses($_POST['ticketId']);
     <button class="text-red-300">Log Out</button>
 </form>
 <!-- Content container -->
-<div class="container mx-auto mt-8 p-8 bg-white rounded-lg" style="width: 70%;">
-<div class="flex justify-end">
-<p rel="noopener noreferrer" class="bg-gradient-to-l from-purple-700  p-2 font-bold rounded bg-blue-700 text-white"><?= $ct['priority'] ?></p>
+<div id="bodyy" class="container mx-auto mt-8 p-8 bg-white rounded-lg" style="width: 70%;">
+    <div class="flex justify-end">
+    <p rel="noopener noreferrer" class="bg-gradient-to-l from-purple-700  p-2 font-bold rounded bg-blue-700 text-white"><?= $ct['priority'] ?></p>
 
 </div>
     <!-- Ticket details section -->
     <div class="mb-8">
+        <?php
+        $x = $_POST['userId'];
+        $y = $_SESSION['userId'];
+        $w = false;
+        foreach ($result as $vl) {
+            if ($vl['userId'] == $x) {
+                $w = true;
+            }
+        }
+        echo $w;
+        if ( $x == $y && $ct['status'] != 'Closed' || $w = true && $ct['status'] != 'Closed') { ?>
+            <p id="closeTicket" class="hover:opacity-70 cursor-pointer  text-red-400 font-bold text-xl bg-gray-100 p-4 rounded-xl w-36 flex justify-center shadow-xl absolute top-26 left-8"> CLOSE </p>
+            <input id="ticketiD" type="hidden" value="<?= $ticketID; ?>">
+        <?php }?>
+        <?php if ($x == $y) { ?>
+            <p id="editTicket" class="hover:opacity-70 cursor-pointer  text-green-400 font-bold text-xl bg-gray-100 p-4 rounded-xl w-36 flex justify-center shadow-xl absolute top-64 left-8"> Edit Your Ticket </p>
+        <?php }?>
         <h1 class="text-3xl font-bold mb-4" id="ticketTitle"><?= $ct['title']; ?></h1>
         <div class="shadow-xl my-8 flex h-14 justify-start items-center bg-blue-100 w-64 justify-between rounded-xl px-6">
             <p class="text-gray-500 text-sm">Created by </p>
@@ -128,8 +145,8 @@ $result = $assignment->SelectAssignedUses($_POST['ticketId']);
                 <p class="text-gray-600" ><?= $ct['username']; ?></p>
             </div>
         </div>
-        <p class="text-sm underline mb-2 text-blue-500"><?= $ct['status'] ?></p>
-        <p class="text-gray-600 mb-2"><?= $ct['description'] ?></p>
+        <p id="status" class="text-sm underline mb-2 text-blue-500"><?= $ct['status'] ?></p>
+        <p id="description" class="text-gray-600 mb-2"><?= $ct['description'] ?></p>
         <p class="text-gray-800 italic text-green-400" id="ticketDesc">#<?= $ct['tag']; ?></p>
         <!-- Add more ticket details as needed -->
     </div>
@@ -150,8 +167,9 @@ $result = $assignment->SelectAssignedUses($_POST['ticketId']);
     <div class="mb-8">
         <h2 class="text-2xl font-semibold mb-4">Comments</h2>
 
-        <!-- Comment form -->
-            <!-- Your comment form fields go here -->
+    <?php
+    if($ct['status'] !== 'Closed') {
+    ?>
             <div class="mb-8">
                 <label for="comment" class="block text-sm font-medium text-gray-700">Add a comment:</label>
                 <div class="flex">
@@ -161,24 +179,19 @@ $result = $assignment->SelectAssignedUses($_POST['ticketId']);
                 </div>
             </div>
 
-        <!-- Comments list -->
         <div>
-            <!-- Loop through comments and display them -->
             <div class="items-start mb-6" id="comments">
-<!--                <img src="../img/defaultProfile.png" alt="User Avatar" class="w-10 h-10 rounded-full mr-4">-->
-<!--                <div>-->
-<!--                    <p class="text-gray-800"><strong>User123:</strong> This is a comment. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
-<!--                    <p class="text-gray-600 text-sm">Posted on December 24, 2023</p>-->
-<!--                </div>-->
+                <!-- display comments here -->
             </div>
-            <!-- Add more comments as needed -->
         </div>
+        <?php } else { ?>
+        <h1 class="text-red-400 text-4xl bg-red-100 p-4 rounded">This Ticket is Closed <span class="text-sm">so you can't see or add comments !</span></h1>
+        <?php }?>
     </div>
-
-    <!-- Other sections of the detail page go here -->
-
 </div>
 
 <script src="../js/Comments.js"></script>
+<script src="../js/closeTicket.js"></script>
+<script src="../js/editTicket.js"></script>
 </body>
 </html>
