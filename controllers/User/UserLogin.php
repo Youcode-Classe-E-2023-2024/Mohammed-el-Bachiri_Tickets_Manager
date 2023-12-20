@@ -19,11 +19,11 @@
     }
     elseif ($loginResult === 'AccNotFound') {
         $_SESSION['login'] = 'AccNotFound';
-        header('location: ../login.php');
+        header('location: ../../pages/login.php');
     } else {
         if (isset($loginResult)) {
             $_SESSION['login'] = true; // pass correct + login status now is LOGED IN
             $_SESSION['userId'] = $loginResult; // login method returns user id
-            header('location: ../../pages/index.php');
+            header('location: ../../index.php');
         }
     }

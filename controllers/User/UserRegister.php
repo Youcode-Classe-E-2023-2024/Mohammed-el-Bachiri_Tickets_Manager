@@ -16,8 +16,8 @@ try {
 }
 if ($registerResult) {
     $_SESSION['register'] = 'Account Created Successfully';
-    header('location: ../../login.php');
+    header('location: ../../pages/login.php');
 } else {
     $_SESSION['register'] = 'Account Already Exists !';
-    header('location: ../../register.php');
+    header('location: ../../pages/register.php');
 }

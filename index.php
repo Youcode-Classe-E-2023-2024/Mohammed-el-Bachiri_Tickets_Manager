@@ -1,10 +1,10 @@
 <?php
 session_start();
-include '../config/DbConnection.php';
-include '../classes/User.php';
+include 'config/DbConnection.php';
+include 'classes/User.php';
 
 if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
-    header('location: ../login.php');
+    header('location: pages/login.php');
 }
 elseif (isset($_SESSION['userId'])){
     $user = new User($connection);
@@ -33,7 +33,7 @@ elseif (isset($_SESSION['userId'])){
     <div class="inline-flex">
         <a class="_o6689fn"
             ><div class="hidden md:block">
-                <img src="../img/logo.png" class="h-8" alt="">
+                <img src="img/logo.png" class="h-8" alt="">
             </div>
             <div class="block md:hidden">
                 <svg width="30" height="32" fill="currentcolor" style="display: block">
@@ -62,9 +62,9 @@ elseif (isset($_SESSION['userId'])){
       <div class="flex justify-end items-center relative">
        
         <div class="flex mr-4 items-center">
-            <div class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center  bg-gray-200 rounded-full cursor-pointer">My Tickets</div>
-            <div class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">Assignments</div>
-            <div class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">All Tickets</div>
+            <div id="mine" class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center  bg-gray-200 rounded-full cursor-pointer">My Tickets</div>
+            <div  class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">Assignments</div>
+            <div id="all" class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">All Tickets</div>
           <div class="block relative">
             <button type="button" class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full relative ">
               <div class="flex items-center h-5">
@@ -90,7 +90,7 @@ elseif (isset($_SESSION['userId'])){
                     </div>
                     <p class="mx-4"><?= $currentUserData['username'] ?></p>
                     <div class="flex pl-2 h-10" id="btnMenu">
-                        <img src="../img/<?=$currentUserData['imagePath']?>" alt="" class="rounded-full shadow-xl">
+                        <img src="img/<?=$currentUserData['imagePath']?>" alt="" class="rounded-full shadow-xl">
                     </div>
                 </button>
             </div>
@@ -100,19 +100,22 @@ elseif (isset($_SESSION['userId'])){
 <!-- end login -->
 </nav>
 
-<form id="menu" class="shadow-xl m-2 p-3 absolute bg-white rounded-xl right-6" style="top: -15px; z-index: -1;" action="../controllers/User/LogOut.php" method="post">
-    <p>Profile</p>
+<form id="menu" class="shadow-xl m-2 p-3 absolute bg-white rounded-xl right-6" style="top: -15px; z-index: -1;" action="controllers/User/LogOut.php" method="post">
+    <a href="profile.php"><p>Profile</p></a>
     <button class="text-red-300">Log Out</button>
 </form>
 
 <div style="width: 100px;" class="bg-blue-800 bg-gradient-to-l from-purple-700 m-4 text-white hover:text-gray-400 transition-all flex inline-block py-2 px-3 items-center shadow-lg rounded-full cursor-pointer">
-    <a href="addTicket.php" class="w-fit">Add Ticket</a>
+    <a href="pages/addTicket.php" class="w-fit">Add Ticket</a>
 </div>
 
-<div id="displayTickets" class="text-gray-100 mt-4">
-<!-- display tickets here -->
-</div>
-<script src="../js/DisplayTicketsAjax.js"></script>
-<script src="../js/menu.js"></script>
+            <div id="displayTickets" class="text-gray-100 mt-4">
+                <!-- display tickets here -->
+
+            </div>
+
+
+<script src="js/DisplayTicketsAjax.js"></script>
+<script src="js/menu.js"></script>
 </body>
 </html>

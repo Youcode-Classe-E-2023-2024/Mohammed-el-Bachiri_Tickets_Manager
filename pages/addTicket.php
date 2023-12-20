@@ -24,7 +24,7 @@ if(!isset($_SESSION['login']) && $_SESSION['login'] !== true){
 <nav class="bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
     <!-- logo -->
     <div class="inline-flex">
-        <a class="_o6689fn" href="index.php"
+        <a class="_o6689fn" href="../index.php"
             ><div class="hidden md:block">
                 <img src="../img/logo.png" class="h-8" alt="">
             </div>

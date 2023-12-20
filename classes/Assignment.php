@@ -17,21 +17,19 @@ class Assignment {
         }
     }
 
-    function SelectAll(){
-        $query = "SELECT tickets.priority, tickets.title, tickets.description, tickets.status, users.username, users.imagePath, tags.tag,
+    function SelectAssignedUses($ticketId){
+        $query = "SELECT users.userId, users.username, users.imagePath
         FROM assignments
         JOIN users ON assignments.userId = users.userId
-        JOIN tickets ON assignments.ticketId = tickets.ticketId
-        JOIN tags ON tags.tagId = tags.tagId
+        WHERE assignments.ticketId = ?
         ";
-        $execution = mysqli_execute_query($this->connection, $query);
+        $stm = $this->connection->prepare($query);
+        $stm->bind_param('i', $ticketId);
+        $execution = $stm->execute();
         if (!$execution) {
             throw new Exception();
-        }
-        if (mysqli_num_rows($execution) > 0) {
-            return $execution;
         } else {
-            return 'ticket do not exist';  
+            return $stm->get_result();
         }
     }
 }

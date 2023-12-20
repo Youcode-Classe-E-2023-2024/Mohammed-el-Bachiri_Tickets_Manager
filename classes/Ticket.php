@@ -7,7 +7,7 @@ class Ticket {
     }
 
     function SelectAll(){
-        $query = "SELECT tickets.priority, tickets.title, tickets.description, tickets.status, users.username, users.imagePath, tags.tag
+        $query = "SELECT tickets.ticketId, tickets.priority, tickets.title, tickets.description, tickets.status, users.username, users.imagePath, tags.tag
         FROM tickets
         JOIN users ON tickets.userId = users.userId
         JOIN tags ON tickets.tagId = tags.tagId
@@ -38,7 +38,11 @@ class Ticket {
 
     function Select($ticketId)
     {
-        $query = "SELECT * FROM tickets WHERE ticketId = ?";
+        $query = "SELECT tickets.ticketId, tickets.priority, tickets.title, tickets.description, tickets.status, users.username, users.imagePath, tags.tag
+        FROM tickets
+        JOIN users ON tickets.userId = users.userId
+        JOIN tags ON tickets.tagId = tags.tagId
+        WHERE ticketId = ?";
         $stm = $this->connection->prepare($query);
         $stm->bind_param('i', $ticketId);
         $execution = $stm->execute();
@@ -46,8 +50,31 @@ class Ticket {
             throw new Exception($stm->error);
         } else {
             $result = $stm->get_result();
-            $data = $result->fetch_all(MYSQLI_ASSOC);
-            return $data;
+            return $result->fetch_assoc();
         }
     }
+
+    function SelectMine($userId)
+    {
+        $query = "SELECT tickets.ticketId, tickets.priority, tickets.title, tickets.description, tickets.status, users.username, users.imagePath, tags.tag
+        FROM tickets
+        JOIN users ON tickets.userId = users.userId
+        JOIN tags ON tickets.tagId = tags.tagId
+        WHERE userId =?";
+        $stm = $this->connection->prepare($query);
+        $stm->bind_param('i', $userId);
+        $execution = $stm->execute();
+        if (!$execution) {
+            throw new Exception($stm->error);
+        } else {
+            $result = $stm->get_result();
+            if ($result->num_rows > 0) {
+                return $result->fetch_all(MYSQLI_ASSOC);
+            } else {
+                // Handle case where no results are found
+                return [];
+            }
+        }
+    }
+
 }
