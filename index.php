@@ -48,7 +48,7 @@ elseif (isset($_SESSION['userId'])){
     <div class="hidden sm:block flex-shrink flex-grow-0 justify-start px-2">
         <div class="inline-block">
             <div class="inline-flex items-center max-w-full">
-                <button class="flex items-center flex-grow-0 flex-shrink pl-2 relative w-60 border rounded-full px-1  py-1" type="button">
+                <button class="flex items-center flex-grow-0 flex-shrink pl-2 relative w-60 border rounded-full px-1  py-1" type="button"></button>
                     <input class="block flex-grow flex-shrink overflow-hidden outline-none px-2" placeholder="search a ticket"/>
                     <div>&#128269;</div>
                 </button>
@@ -62,8 +62,8 @@ elseif (isset($_SESSION['userId'])){
       <div class="flex justify-end items-center relative">
        
         <div class="flex mr-4 items-center">
-            <div id="mine" class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center  bg-gray-200 rounded-full cursor-pointer">My Tickets</div>
-            <div  class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">Assignments</div>
+            <div id="mine" class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center  bg-gray-200 rounded-full cursor-pointer shadow-lg">My Tickets</div>
+            <div id="assignedTo"  class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">Assignments</div>
             <div id="all" class="ml-4 hover:text-gray-400 transition-all flex inline-block py-2 px-3  items-center shadow-lg bg-gray-200 rounded-full cursor-pointer">All Tickets</div>
           <div class="block relative">
             <button type="button" class="inline-block py-2 px-3 hover:bg-gray-200 rounded-full relative ">
@@ -113,7 +113,6 @@ elseif (isset($_SESSION['userId'])){
                 <!-- display tickets here -->
 
             </div>
-
 
 <script src="js/DisplayTicketsAjax.js"></script>
 <script src="js/menu.js"></script>

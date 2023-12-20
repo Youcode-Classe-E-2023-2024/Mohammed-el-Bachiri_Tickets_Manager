@@ -60,7 +60,7 @@ class Ticket {
         FROM tickets
         JOIN users ON tickets.userId = users.userId
         JOIN tags ON tickets.tagId = tags.tagId
-        WHERE userId =?";
+        WHERE tickets.userId = ?";
         $stm = $this->connection->prepare($query);
         $stm->bind_param('i', $userId);
         $execution = $stm->execute();
@@ -72,6 +72,30 @@ class Ticket {
                 return $result->fetch_all(MYSQLI_ASSOC);
             } else {
                 // Handle case where no results are found
+                return [];
+            }
+        }
+    }
+
+    function SelectAssigned($userId)
+    {
+        $query = "SELECT assignments.ticketId, tickets.title, tickets.description, tickets.status, tickets.tagId, tickets.priority, users.imagePath, users.username
+        FROM assignments
+        JOIN tickets ON assignments.ticketId = tickets.ticketId
+        JOIN users ON tickets.userId = users.userId
+        WHERE assignments.userId = ?;
+        ";
+
+        $stm = $this->connection->prepare($query);
+        $stm->bind_param('i', $userId);
+        $execution = $stm->execute();
+        if (!$execution) {
+            throw new Exception($stm->error);
+        } else {
+            $result = $stm->get_result();
+            if ($result->num_rows > 0) {
+                return $result->fetch_all(MYSQLI_ASSOC);
+            } else {
                 return [];
             }
         }

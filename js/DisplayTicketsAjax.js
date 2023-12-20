@@ -1,8 +1,9 @@
 const displayTicketsDiv = document.querySelector('#displayTickets');
 const all = document.querySelector('#all');
 const mine = document.querySelector('#mine');
+const assignedTo = document.querySelector('#assignedTo');
 
-function displayTickets(url) {
+function displayTickets(url, urlAssignment, type = null) {
     displayTicketsDiv.innerHTML = '';
     fetch(url) // the url from the index page not from here !!!
         .then(response => response.json())
@@ -31,6 +32,7 @@ function displayTickets(url) {
                         <button rel="readMreBtn noopener noreferrer" class="hover:underline text-blue-400">Read more</button>
                         <input name="ticketId" type="hidden" value="${ticket.ticketId}">
                     </form>
+                    <div id="testallah"></div>
                         <div>
                             <a rel="noopener noreferrer" href="#" class="flex items-center">
                                 <p class="text-sm text-gray-600">Created By</p>
@@ -41,24 +43,28 @@ function displayTickets(url) {
                     </div>
                 </div>
                 `;
+                if (type === 'assign'){
+                    document.querySelector('#testallah').innerHTML = `<p class="text-red-400">hello</p>`;
+                }
             });
-            fetchUsers(); // display assigned users after displaying each ticket
+            fetchUsers(urlAssignment); // display assigned users after displaying each ticket
         })
         .catch(error => console.log(error));
 }
 
-function fetchUsers() {
+function fetchUsers(url) {
     const ticketDivs = document.querySelectorAll('.ticketDiv');
     const usersAndProfilesDivs = document.querySelectorAll('.usersAndProfiles');
 
     ticketDivs.forEach((elm, index) => {
-        fetch('controllers/Assignment/AssignmentSelectAll.php', {
+        fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ticketId: elm.getAttribute('value') }),
+            body: JSON.stringify({ ticketId: elm.getAttribute('value')}),
         })
             .then(response => response.json())
             .then(data => {
+                console.log(data);  // Log the data to the console
                 usersAndProfilesDivs[index].innerHTML = ''; // Clear existing content
                 data.forEach(user => {
                     usersAndProfilesDivs[index].innerHTML += `
@@ -73,10 +79,23 @@ function fetchUsers() {
     });
 }
 all.addEventListener('click', () =>{
-    displayTickets("controllers/Ticket/TicketSelectAll.php");
+    mine.style = "box-shadow: 0 0px 0px blue";
+    assignedTo.style = "box-shadow: 0 0px 0px blue";
+    all.style = "box-shadow: 0 5px 5px blue";
+    displayTickets("controllers/Ticket/TicketSelectAll.php", 'controllers/Assignment/AssignmentSelectAll.php');
 });
 
-mine.addEventListener('click', () =>{
-    displayTickets("controllers/Ticket/TicketSelectMine.php");
-})
+mine.addEventListener('click', () => {
+    all.style = "box-shadow: 0 0px 0px blue";
+    assignedTo.style = "box-shadow: 0 0px 0px blue";
+    mine.style = "box-shadow: 0 5px 5px blue";
+    displayTickets("controllers/Ticket/TicketSelectMine.php", 'controllers/Assignment/AssignmentSelectAll.php');
+});
+
+assignedTo.addEventListener('click', () => {
+    all.style = "box-shadow: 0 0px 0px blue";
+    mine.style = "box-shadow: 0 0px 0px blue";
+    assignedTo.style = "box-shadow: 0 5px 5px blue";
+    displayTickets("controllers/Ticket/TicketSelectAssignedTo.php", 'controllers/Assignment/AssignmentSelectAll.php', 'assign');
+});
 
